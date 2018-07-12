@@ -27,3 +27,17 @@ The search service is serving the endpoints for the frontend and is delivering d
 
 ## The Frontend service
 The frontend service is the static files that forms the frontend seen by the users and is communicating with the search service in order to retrieve data
+
+# RabbitMQ
+To use RabbitMQ, start the container with 
+```
+docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
+```
+The ports are used to map ports between the container and your local machine
+```
+http://localhost:15672
+```
+Default Username/Password
+```
+guest/guest
+```
