@@ -41,3 +41,13 @@ Default Username/Password
 ```
 guest/guest
 ```
+
+# Elastic
+To pull the container
+```
+docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+````
+Start the container with
+```
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+```
