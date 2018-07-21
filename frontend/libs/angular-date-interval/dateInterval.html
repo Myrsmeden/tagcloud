@@ -1,0 +1,64 @@
+
+<div class="date-interval-wrapper"  
+ng-mousemove="moveRange($event)" 
+ng-mouseup="updateRange()" >
+{{changeLeft}}<br>
+{{changeRight}}
+	<div class="date-interval-timeline" ng-mousemove="sliderPercent($event)" >
+		<div class="date-interval" style="width: {{leftWidth}}%;"></div>
+		
+		<div class="date-interval selected-range" style="width: {{middleWidth}}%";>
+			
+			<div class="arrow-down date-interval-left-selector">
+				<div 
+					ng-init="inputLeft=false" 
+					class=" date-interval-date-left date-interval-date" 
+					ng-dblclick="inputLeft=!inputLeft" 
+					ng-mousedown="changeLeft=true" 
+					>
+
+
+					<input 
+						ng-keypress="setInputLeft($event, leftInput)" 
+						ng-show="inputLeft" 
+						ng-model="leftInput">
+					</input>	
+					
+					<div ng-hide="inputLeft">{{leftDate.toLocaleDateString()}}</div>
+
+				</div>
+			</div>
+			
+			<div class="arrow-up date-interval-right-selector">
+				<div 
+					ng-init="inputRight=false" 
+					class=" date-interval-date-right flipped-date" 
+					ng-dblclick="inputRight=!inputRight" 
+					ng-mousedown="changeRight=true" 					
+					>
+
+
+					<input 
+						ng-keypress="setInputRight($event, rightInput)" 
+						ng-show="inputRight" 
+						ng-model="rightInput">
+					</input>
+					
+					<div ng-hide="inputRight">{{rightDate.toLocaleDateString()}}</div>
+
+				</div>
+			</div>
+
+		</div>
+		
+		<div class="date-interval" style="width: {{rightWidth}}%;"></div>
+
+		
+	</div>
+
+	<!-- 
+		When the selector is doubbleclicked the input should be seen
+	 -->
+	
+
+</div>

@@ -1,0 +1,144 @@
+/*
+ * Range slider angular only
+ * Filip Johansson, fij@kth.se
+ */
+
+.date-interval-wrapper {
+	font-family: "Arial", sans-serif;
+	font-size: 0.67em;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width:100%;
+	float: left;
+}
+
+.date-interval-timeline {
+	width: 70%;
+	margin: 0 15%;
+	padding: 65px 0px;
+	box-sizing: border-box; 
+}
+
+.date-interval {
+	height:5px;
+	background-color: #eee;
+	float: left;
+}
+
+.selected-range {
+	background-color: #666;
+	position: relative;
+	float: left;
+}
+
+.date-interval-date {
+	padding: 6px;
+	border-radius: 3px; 
+	background-color: #ccc;
+	position: absolute;
+	top: -40px;
+	color: white;
+	width: 140px;
+}
+.date-interval-date:hover {
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab;
+}
+.date-interval-date:active {
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
+}
+
+.date-interval-date-left {
+	left: -75px;
+}
+.date-interval-date-right {
+	right: -75px;
+}
+
+.date-interval-date input {
+	width: 100%;
+	float: left;
+	box-sizing: border-box;
+	background-color: #eee;
+	border: none;
+	text-align: center;
+	color: #666;
+	font-family: "Arial";
+	font-size: 1em;
+}
+
+.date-interval-left-selector {
+	left:-10px;
+}
+.date-interval-right-selector {
+	right: -10px;
+}
+
+/*
+Code from:
+https://css-tricks.com/snippets/css/css-triangle/
+*/
+
+.arrow-down {
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	
+	border-top: 10px solid #ccc;
+	text-align: center;
+
+	/* My own */
+	top: -10px;
+	position: absolute;
+}
+
+.arrow-up {
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	
+	border-bottom: 10px solid #ccc;
+	text-align: center;
+
+	/* My own */
+	top: 5px;
+	position: absolute;
+}
+
+.flipped-date {
+	padding: 6px;
+	border-radius: 3px; 
+	background-color: #ccc;
+	position: absolute;
+	top: 10px;
+	color: white;
+	width: 140px;
+}
+
+.flipped-date input {
+	width: 100%;
+	float: left;
+	box-sizing: border-box;
+	background-color: #eee;
+	border: none;
+	text-align: center;
+	color: #666;
+	font-family: "Arial";
+	font-size: 1em;
+}
+
+.flipped-date:hover {
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab;
+}
+.flipped-date:active {
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
+}

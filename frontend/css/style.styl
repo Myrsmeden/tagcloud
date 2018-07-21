@@ -1,0 +1,230 @@
+//
+//	FONT
+//
+fnt-tutorial 		= "Helvetica neue"
+fnt-theme 	 		= "Helvetica neue"
+fnt-text 				= sans-serif
+
+//
+//	COLORS
+//
+clr-detail			= #987654
+clr-discrete		= rgba(0,0,0,0.4)
+clr-text				= black
+clr-title 			= rgba(0,0,0,0.7)
+clr-shadow			= rgba(0,0,0,0.5)
+
+//
+// WRAPPER (index.html)
+//
+.wrapper
+	float 					left
+	height 					99vh
+	position 				relative
+	width 					100%
+
+//
+//	HEADER (home.html)
+//
+header
+	position 				fixed
+	right 0
+	z-index 				11
+	span
+		float 				right
+		font-size			25px
+		margin 				15px
+		padding 			5px
+		color 				rgb(60,150, 200)
+		&:hover
+			cursor			pointer
+
+//
+// MAIN (home.html)
+//
+main
+	float						left
+	width 					100%
+	position				relative
+
+//
+// FOOTER (home.html)
+//
+footer
+	color 					clr-discrete
+	font-size 			1.2em
+	padding 				4em 1em 1em 0em
+	text-align 			right
+	width 					100%
+	float 					left
+	p
+		font-family 			fnt-theme
+		font-style 				italic
+		letter-spacing 		1px
+		margin-right 			3%
+		
+//
+//	INFO (MODAL) (home.html)
+//
+.modal-popup
+	position 				absolute
+	top 						20%
+	z-index 				100
+	
+//
+//	LOADER (loader.html)
+//
+.loader
+	width					100%
+	height 				100%
+	position 			absolute
+	top 					0
+	left 					0
+	background-color rgba(255,255,255,0.8)
+	z-index 			10
+	text-align 		center
+	img
+		margin-top 10%
+		width 125px
+	
+
+//
+//	TAG CLOUD (home.html)
+//
+.tag-cloud
+	background-color 	white
+	position 					relative
+	
+#jqcloud
+	margin 						0px 100px 0px 100px
+	
+//
+//	RANGE
+//	The styling for the range does not go here.
+//	See libs/angular-date-interval/dateInterval.css
+//
+	
+//
+//	PARTY BUTTONS
+//
+.party-btn
+	width 						145px
+	padding						1em
+	border-radius 		100%
+	box-shadow 				5px 8px 8px 0px rgba(0,0,0,0.2)
+	transition 				all 0.2s
+	background-color 	white
+	
+.party-btn-selected
+	padding						1em
+	border-radius 		100%
+	box-shadow 				2px 3px 3px -1px rgba(0,0,0,0.3);
+	
+//
+//	TUTORIAL (home.html)
+//
+.tutorial-background
+	background-color 		rgba(0,0,0,0.85)
+	width 					100vw
+	height 					100vh
+	position 				fixed
+	top 						0
+	left 						0
+	z-index 				10
+	font-weight 		bold
+
+.tutorial-wrapper
+	position 				relative
+	font-family 		fnt-tutorial
+	font-size 			1.5em
+	font-weight 		100
+	
+.close-tut
+	font-size 			1.5em
+	color 					white
+	padding 				5px
+	margin 					15px
+	z-index 				16 !important
+	position 				absolute
+	top 						0
+	left 						0
+	
+.tutorial
+	position 				absolute
+	z-index 				15
+	img
+		margin-left 		0.5vw
+	
+//	STEP 1
+.tut-welcome
+	top 						0
+	left 						0
+	font-size 			3em
+	color 					white
+	text-align 			center
+	padding 				3em
+
+//	STEP 2
+.tut-select-party
+	top 						-7em
+	left 						3.9vw
+	
+//	STEP 3
+.tut-cloud
+	text-align 			center
+	padding 				0 4em
+
+//STEP 4
+.tut-range
+	top 						-20em
+	left 						12vw
+	padding-right 	6em
+	
+// Text
+.tut-instruction
+	font-size 			3em
+	color 					white
+	font-family 		fnt-tutorial
+	font-weight 		100
+	
+.tut-highlight
+	z-index 				15
+	
+.tut-nav
+	z-index 				15
+	font-size 			3em
+	color 					white
+	font-family 		fnt-text
+	position 				fixed
+	left 						0
+	bottom 					0
+	width 					100%
+	img
+		padding 			30px
+	
+//
+//	UTIL
+//
+.clickable
+	cursor 					pointer
+	
+.force-right
+	float 					right
+	
+.force-left
+	float 					left
+	
+// Bootstrap 8-grid	solution
+.col-8
+	width 					12.5%
+
+// Disable user select
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}

@@ -1,0 +1,64 @@
+/*
+	DataTemplate
+*/
+{
+	name: "party name",
+	limit: "maximum hastags per day",
+	startDate: "Timestamp from first requested date",
+	endDate: "Timestamp from last requested date",
+	minDate: "Timestamp from the earliest possible requestable hastag",
+	maxDate: "Timestamp from the latest possible requsetable hashtag",
+	hashtags: [{text: "hashtag1"}, ... {text: "hashtagN"}],
+	uniqueTags: "Number of unique tags for specific party",
+	days: {
+		weight: [[day1], [day2], ..., [dayN]],
+		ratio: [[day1], [day2], ..., [dayN]]
+	}
+	requestedInterval: {
+		weight: [],
+		ratio: []
+	}
+}
+
+
+
+/*
+	Example for days
+*/
+	
+	day1 is the same day as startDate
+	dayN is the same day as endDate
+
+	hashtags: [
+		{text: "svpol"}, {text: "migpol"}, ..., {text:"almedalen"}
+	]
+
+	days: {
+		weight: [[1, 5, 10, ..., 1], ..., [4, 5, 10, ..., 0]],
+		ratio: [[0.3, 0.2, ..., 0.1], ..., [0.5, 0.2, ..., 0.00001]]
+	}
+
+	The index of a hash tag in hashtags is the same as the indexs for the corresponding weight and ratio for a certain day. I.e "svpol" had the weight 1 and ratio 0.3 the first day. The N:th day it had the weight 4 and ratio 0.5. "almedalen" was not among top 100 the N:th day and will therefore get weight 0 but the ratio will still be included.
+
+	weight is a number between 1 and 10.
+
+
+/*
+	Example for requested days
+*/
+	requestedIntervall: {
+		weight: [1, 5, 10, ..., 1],
+		ratio: [0.3, 0.2, ..., 0.1]
+	}
+	
+	This work as the same way as the example above but the values correspond to all the days in the requested time interval.
+
+
+
+
+
+
+
+
+
+

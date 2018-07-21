@@ -1,0 +1,29 @@
+<div role="dialog" ng-controller="HomeCtrl">
+      <!-- Open Modal content-->
+  <div class="col-xs-12 modal-popup">
+      <div class="modal-content modal-lg center-block">
+        
+        <div class="modal-header">
+			<h1 class="modal-heading">Welcome to the Political Tag Cloud!</h1>
+        </div>
+
+        <div class="modal-body">
+        	<p>
+        		The Political Tag Cloud is an application where you can see different swedish partys Twitter-followers hashtags. (That was a wired sentence, this text needs to be updated) Just decide whitch range you want the tweets from and click one of the party symbols and we'll fetch the data for you.
+    		</p>
+        </div>
+
+        <div class="modal-footer">
+			<form class="col-xs-12 modal-form" ng-submit="closeModal(dontShowAgain)" role="form">
+				<button type="submit" class="col-xs-offset-5 col-xs-1 modal-btn btn btn-default">I get it</button>
+				<div class="col-xs-offset-1 col-xs-5 checkbox">
+					<input type="checkbox" ng-model="dontShowAgain">
+						<lable class="bread">Thanks but don't show this to me again, please.</lable>
+					</input>
+				</div>
+				
+			</form>
+        </div>
+      </div>
+  </div>
+</div><!-- end of modal -->

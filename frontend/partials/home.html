@@ -1,0 +1,194 @@
+<header>
+	<a ng-click="startTutorial()">
+		<span class="glyphicon glyphicon-info-sign"></span>
+	</a>
+</header>
+
+<main>
+	<div class="tutorial-background" ng-show="tutorialStep!=0"></div>
+	<span class="close-tut glyphicon glyphicon-remove clickable" ng-click="stopTutorial()" ng-show="tutorialStep!=0"></span>
+
+	<!-- 
+		Modal
+	-->
+	
+	<div role="dialog" ng-show="showModal">
+    <!-- Open Modal content-->
+	  <div class="col-xs-12 modal-popup">
+	      <div class="modal-content modal-lg center-block">
+	        
+	      <div class="modal-header">
+					<h1 class="modal-heading">Välkommen till det politiska tag-molnet.</h1>
+	      </div>
+
+        <div class="modal-body">
+        	<h2>Vad är det här?</h2>
+        	<p>
+        		Applikaitonen visar de mest populära twitter-hashtagsen från följare av de svenska riksdagspartierna.<br>
+        		Ställ in tidsintervall och parti för att se vilka hashtags som använts mest under en viss period för ett visst parti.
+    			</p>
+    			<h2>Guide</h2>
+    			<p><a ng-click="startTutorial();" class="clickable">Ta en guidad tur av applikationen.</a>
+    			<br>
+    			</p>
+    			<div ng-show="getCookieStorage()">
+	    			<h2>Cookies</h2>
+	    			<p>
+	    				Vi lagrar följande informaiton lokalt i din webbläsare:<br>
+	    				- Informaiton om detta meddelande skall visas när du besöker sidan eller inte.<br>
+	    				- Information om du accepterar cookies eller inte.
+	    			</p>
+	    			<p>
+	    				Klicka på acceptera cookies för att fortsätta använda tjänsten.
+	    			</p>
+	    			<input type="checkbox" ng-model="allowCookie"> Acceptera cookies.
+    			</div>
+        </div>
+
+        <div class="modal-footer">
+					<form class="col-xs-12 modal-form" ng-submit="setStorage(dontShowAgain); close();" role="form">
+						<button ng-disabled="!allowCookie" type="submit" class="col-xs-offset-5 col-xs-1 modal-btn btn btn-default">Stäng</button>
+						<div class="col-xs-offset-1 col-xs-5 checkbox">
+							<input type="checkbox" ng-model="dontShowAgain">
+							<label class="bread">Visa inte det här igen.</label>
+						</div>
+					</form>
+        </div>
+	    </div>
+	  </div>
+	</div><!-- end of modal -->
+
+	<!-- 
+		TAG CLOUD
+	-->
+	<div class="tutorial-wrapper tag-cloud noselect" ng-class="{'tut-highlight':(tutorialStep===3)}">
+		<!-- 
+			LOADER
+			Displayed when data is loading.
+		-->
+		<ng-include src="'partials/loader.html'" ng-show="loading"></ng-include>
+		<jqcloud 
+
+			id='jqcloud' 
+			words="[{text: 'Political Tag Cloud', weight: 13}]" 
+			height="500" 
+			center='{x: 0.5, y:0.5}' 
+			colors="['#800026']" 
+			delay="5" 
+			steps="7" 
+			font-size="{'from':0.18, 'to':0.01}" 
+			shape='elliptic'>
+		</jqcloud>
+		
+		<div class="tutorial tut-welcome" ng-show="tutorialStep === 1">
+			<p>Välkommen till det politiska tag-molnet. Klicka på nästa för att gå vidare i guiden.</p>
+		</div>
+
+		<div class="tutorial tut-cloud" ng-show="tutorialStep === 3">
+			<p class="tut-instruction">Molnet visar de mest använda hashtagsen från partiets twitter-följare.</p><br/>
+		</div>
+	</div>
+	
+
+	<!-- 
+		TIMELINE
+	-->
+	<div class="tutorial-wrapper" ng-class="{'tut-highlight':(tutorialStep===4)}">
+		<div class="date-interval-wrapper"  
+			ng-mousemove="moveRange($event)">
+			<div class="date-interval-timeline" ng-mousemove="sliderPercent($event)" >
+				<div class="date-interval" style="width:{{leftWidth}}%;"></div>
+				
+				<div class="date-interval selected-range" style="width:{{middleWidth}}%;">
+					
+					<!-- Left date slider -->
+					<div class="arrow-down date-interval-left-selector">
+						<div 
+							ng-init="inputLeft=false" 
+							class=" date-interval-date-left date-interval-date noselect" 
+							ng-dblclick="inputLeft=!inputLeft" 
+							ng-mousedown="changeLeft=true"
+							ng-mouseup="updateRangeData(leftDate)" 
+							>
+							<input 
+								ng-keypress="setInputLeft($event, leftInput)" 
+								ng-show="inputLeft" 
+								ng-model="leftInput">
+							<div ng-hide="inputLeft">{{leftDate.toLocaleDateString()}}</div>
+						</div>
+					</div>
+					<!-- Right date slider -->
+					<div class="arrow-up date-interval-right-selector">
+						<div 
+							ng-init="inputRight=false" 
+							class=" date-interval-date-right flipped-date noselect" 
+							ng-dblclick="inputRight=!inputRight" 
+							ng-mousedown="changeRight=true" 	
+							ng-mouseup="updateRangeData(rightDate)"				
+							>
+							<input 
+								ng-keypress="setInputRight($event, rightInput)" 
+								ng-show="inputRight" 
+								ng-model="rightInput">
+							<div ng-hide="inputRight">{{rightDate.toLocaleDateString()}}</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="date-interval" style="width: {{rightWidth}}%;"></div>
+			</div>
+		</div>
+		<!-- 
+			Tutorial:
+			Shows where to change the interval.
+		-->
+		<div class="tut-range tutorial " ng-show="tutorialStep === 4">
+				<p class="tut-instruction">Dra i datumflikarna för att ställa in tidsintervallet du vill granska.</p><br/>
+				<img class="animated pulse infinite clickable" src="res/svg/icons/Arrow-8.svg">
+		</div>
+	</div>
+	
+
+	<!-- 
+		SELECT PARTY
+		All the party buttons are here.
+	-->
+	<div class="tutorial-wrapper">
+		<div class="col-xs-12" ng-class="{'tut-highlight':(tutorialStep===2)}">
+			<div ng-repeat="party in partyProperties" class="col-8 pull-left noselect">
+				
+			<div class="center-block party-btn clickable" ng-click="selectParty(party)" ng-class="{'party-btn-selected':selected(party.name)}">
+				<img ng-src="{{party.logo}}">
+			</div>
+				
+			</div>
+		</div>
+
+		<!-- 
+			Tutorial:
+			Shows where to select party.
+		-->
+		<div class="tut-select-party tutorial" ng-show="tutorialStep===2">
+			<p class="tut-instruction">Välj ett parti</p><br/>
+			<img class="animated pulse infinite clickable" src="res/svg/icons/Arrow-8.svg">
+		</div>
+	</div>
+
+	<!--
+		Tutorial: 
+		Navigation arrows 
+	-->
+	<div class="tut-nav" ng-hide="tutorialStep===0 || tutorialStep===2">
+		<span class="force-left clickable" ng-click="prev()">
+			<img class="clickable" src="res/svg/icons/Arrow-7.svg">
+		</span>
+		<span class="force-right clickable" ng-click="next()">
+			<img class="clickable" src="res/svg/icons/Arrow-6.svg">
+		</span>
+	</div>
+
+</main>
+
+<footer>
+	<p>Made in Sweden by LCD.</p>
+</footer>
