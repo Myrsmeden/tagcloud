@@ -23,6 +23,7 @@ sinceId = None
 currentUserFile = None
 currentUserFileNumber = 0
 currentUserFileRow = 0
+currentPoliticianId = 0
 
 # Setup files with user ids
 files = []
@@ -35,9 +36,11 @@ def readUserId():
     global currentUserFile
     global currentUserFileRow
     global currentUserFileNumber
+    global currentPoliticianId
     numSearches = 0
     if currentUserFile == None:
         currentUserFile = open(files[currentUserFileNumber]).readlines()
+        currentPoliticianId = files[currentUserFileNumber][files[currentUserFileNumber].rfind('/')+1:]
         currentUserFileNumber += 1
     while numSearches < 10:
         
@@ -66,6 +69,7 @@ def main():
 
     maxId = None
     global sinceId
+    global currentPoliticianId
     # Variable used to check how many connections that have been tested before putting the script to sleep
     timeout = 1
     conn = CL.ConnectionList(filepath="../config/access.conf")
@@ -98,10 +102,22 @@ def main():
                 response = conn.connection().get_user_timeline(user_id = userId,count=200,include_rts = True, trim_user = True, max_id = maxId, since_id = sinceId)
 
             for stuff in response:
-                # Send the tweet to RabbitMQ
-                channel.basic_publish(exchange='',
+                # Set up tweet data to match data wanted in elastic
+                tweet = {}
+                tweet['date'] = datetime.datetime.strptime(stuff["created_at"],
+		        "%a %b %d %H:%M:%S %z %Y").strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+                tweet['user_id'] = stuff['user']['id']
+                tweet['tweet_id'] = stuff['id']
+                tweet['hashtags'] = []
+                tweet['lang'] = stuff['lang']
+                tweet['following'] = currentPoliticianId
+
+                for tag in stuff['entities']['hashtags']:
+                    tweet['hashtags'].append(tag['text'])
+                if len(tweet['hashtags']): # Send to RabbitMQ if we have hashtags
+                    channel.basic_publish(exchange='',
                       routing_key='tweets',
-                      body=json.dumps(stuff))
+                      body=json.dumps(tweet))
                 # Increase the number of downloaded tweets
                 printcount += 1
 

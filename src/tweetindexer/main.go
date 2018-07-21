@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -17,24 +18,60 @@ func failOnError(err error, msg string) {
 
 // Tweet is a structure used for serializing/deserializing data in Elasticsearch.
 type Tweet struct {
-	UserID    string                `json:"user_id"`
-	TweetID   string                `json:"tweet_id"`
+	UserID    int                   `json:"user_id"`
+	TweetID   int                   `json:"tweet_id"`
 	Text      string                `json:"text"`
 	Hashtags  []string              `json:"hashtags"`
 	Mentions  []string              `json:"mentions"`
-	Langugage string                `json:"lang"`
+	Language  string                `json:"lang"`
 	Date      string                `json:"date"`
 	Suggest   *elastic.SuggestField `json:"suggest_field,omitempty"`
+	Following string                `json:"following"`
 }
 
 func main() {
 	// Starting with elastic.v5, you must pass a context to execute each service
 	ctx := context.Background()
 
+	mapping := `{
+		"settings":{
+			"number_of_shards":1,
+			"number_of_replicas":0
+		},
+		"mappings":{
+			"tweet": {
+				"properties": {
+					"user_id": {
+						"type": "long"
+					},
+					"tweet_id": {
+						"type": "long"
+					},
+					"following": {
+						"type": "keyword"
+					},
+					"text": {
+						"type": "text"
+					},
+					"hashtags": {
+						"type": "keyword"
+					},
+					"lang": {
+						"type": "text"
+					},
+					"date": {
+						"format": "date_time",
+						"type": "date"
+					}
+				}
+			}
+		}
+	}`
+
 	// Obtain a client and connect to the default Elasticsearch installation
 	// on 127.0.0.1:9200. Of course you can configure your client to connect
 	// to other hosts and configure it in various other ways.
-	client, err := elastic.NewSimpleClient(elastic.SetURL("http://:9200"))
+	client, err := elastic.NewSimpleClient(elastic.SetURL("http://localhost:9200"))
 	if err != nil {
 		// Handle error
 		panic(err)
@@ -56,6 +93,8 @@ func main() {
 	}
 	fmt.Printf("Elasticsearch version %s\n", esversion)
 
+	_, err = client.DeleteIndex("tweets").Do(ctx)
+
 	// Use the IndexExists service to check if a specified index exists.
 	exists, err := client.IndexExists("tweets").Do(ctx)
 	if err != nil {
@@ -65,7 +104,7 @@ func main() {
 
 	if !exists {
 		// Create a new index.
-		createIndex, err := client.CreateIndex("tweets").Do(ctx)
+		createIndex, err := client.CreateIndex("tweets").BodyString(mapping).Do(ctx)
 		if err != nil {
 			// Handle error
 			panic(err)
@@ -106,13 +145,19 @@ func main() {
 
 	forever := make(chan bool)
 
+	var tweet Tweet
+
 	go func() {
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
+			err := json.Unmarshal(d.Body, &tweet)
+			if err != nil {
+				panic(err)
+			}
 			put, err := client.Index().
 				Index("tweets").
 				Type("tweet").
-				BodyString(string(d.Body)).
+				BodyJson(tweet).
 				Do(ctx)
 			if err != nil {
 				// Handle error
