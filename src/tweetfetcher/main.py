@@ -7,14 +7,11 @@
 from requests.packages.urllib3 import response
 import pika
 
-# @TODO: Clean imports
-
 import ConnectionList as CL
 import json
 from twython import Twython,TwythonRateLimitError,TwythonError,TwythonAuthError
 import sys
 import os
-import getopt
 import datetime
 import time
 import io
@@ -125,14 +122,13 @@ def main():
             maxId = response[-1]['id']-1
 
         except TwythonAuthError:
-                    #Skriv ut dummy json vid privat konto. på det sättet får inte en jsonparser spasmer, men vi har fortfarande info om de kontona.
-                    print('{"text": "privateaccount", "entities": {"symbols": [], "urls": [], "hashtags": [], "user_mentions": []}, "id": null, "user": {"id_str": "'+str(userId)+'", "id": '+str(userId)+'}, "created_at": null, "is_quote_status": false, "in_reply_to_user_id_str": null, "id_str": null, "lang": null, "place": null, "in_reply_to_user_id": null, "source": null, "in_reply_to_status_id_str": null}')
-                    #Läs nästa
-                    maxId = None
-                    userId = readUserId()
+            # We have reached a private account. Fetch next
+            maxId = None
+            userId = readUserId()
                     
                     
         except TwythonRateLimitError as err:
+            # Rate limit error, wait for 16 minutes
             timeout += 1
             print("access "+str(conn.position())+" timed out.", file=sys.stderr)
             if timeout > conn.size():
@@ -142,7 +138,7 @@ def main():
                 print(datetime.datetime.now(), file=sys.stderr)
                 time.sleep(60*15+60) #In sec. 60*15 = 15 min + 1min 
                 print(":)", file=sys.stderr)
-        except TwythonError as err: #Handel timeouts
+        except TwythonError as err: #Handle timeouts
             print("Error:", file=sys.stderr)
             print(err, file=sys.stderr)
             print(err.error_code, file=sys.stderr)
@@ -155,13 +151,12 @@ def main():
             print(eof, file=sys.stderr)
             break
         except Exception as other:
-            #Vid annat felmeddelande skriv ut felmeddelandet som json så att det går att se i efterhand.
-            #Meddelandet skrivs ut på en rad genom att alla newlines byts ut till '\\n'
+            # Some other error message
             print(other, file=sys.stderr)
             print("{\"userId\":"+str(userId)+",\"maxId\":"+str(maxId)+" \"error\":\"")
             print(str(other).replace('\n',"\\n"))
             print("\"}")
-            #Läs nästa
+            # Fetch next
             maxId = None
             userId = readUserId()
 
