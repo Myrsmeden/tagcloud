@@ -1,5 +1,5 @@
 # PTC - Political Tag Cloud - Tagcloud.online
-A facelift of the Software Engineering project from Findwise, originally conducted in 2016. The tagcloud is a website where the hashtag usage is displayed in a tag cloud, divided by which political parties the account is following
+A facelift of the Software Engineering project from Findwise, originally conducted in 2016. The tagcloud is a website where the hashtag usage is displayed in a tag cloud, divided by which political parties the account is following:
 
 # Architecture
 The project is divided in a bunch of different microservices. 
