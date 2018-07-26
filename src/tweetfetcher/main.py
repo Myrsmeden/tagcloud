@@ -3,7 +3,7 @@
     The account ids are read from config/followers folder and 
     the tweets are sent to RabbitMQ
 '''
-
+print("Hello there")
 from requests.packages.urllib3 import response
 import pika
 
@@ -24,7 +24,9 @@ currentPoliticianId = 0
 
 # Setup files with user ids
 files = []
-for entry in os.scandir('../config/followers'):
+pos = os.path.realpath(__file__).find("/src")
+rootdir = os.path.realpath(__file__)[(pos+1):(pos+4)]
+for entry in os.scandir(rootdir + '/config/followers'):
     # Exclide stderr file and DS_Store file
     if entry.is_file() and entry.path.find("stderr") == -1 and entry.path.find("DS") == -1:
         files.append(entry.path)
@@ -56,11 +58,14 @@ def readUserId():
 
 def main():
     # Set up connection to RabbitMQ
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    except pika.exceptions.ConnectionClosed:
-        print("Could not connect to RabbitMQ")
-        exit()
+    while True:
+        try:
+            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+            print("Connected to RabbitMQ")
+            break
+        except pika.exceptions.ConnectionClosed:
+            print("Could not connect to RabbitMQ, waiting")
+            time.sleep(10)
     channel = connection.channel()
     channel.queue_declare(queue='tweets')
 
@@ -69,7 +74,7 @@ def main():
     global currentPoliticianId
     # Variable used to check how many connections that have been tested before putting the script to sleep
     timeout = 1
-    conn = CL.ConnectionList(filepath="../config/access.conf")
+    conn = CL.ConnectionList(filepath=rootdir + "/config/access.conf")
     # Fetch the first user id
     userId = readUserId()
     # Variable to hold the number of downloaded tweets
