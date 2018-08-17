@@ -11,6 +11,11 @@ services:
     image: sebp/elk
     ports:
       - 9200:9200
+    environment:
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+
   tweetfetcher:
     environment:
       - "PYTHONUNBUFFERED=1"
@@ -34,3 +39,6 @@ services:
       - "8080:8080"
     depends_on:
       - elasticsearch
+volumes:
+  esdata1:
+    driver: local
