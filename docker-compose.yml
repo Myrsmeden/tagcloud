@@ -12,7 +12,7 @@ services:
     ports:
       - 9200:9200
     environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms700m -Xmx700m"
 
   tweetfetcher:
     environment:
