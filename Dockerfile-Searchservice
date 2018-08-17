@@ -1,0 +1,16 @@
+FROM golang:1.8
+
+COPY . /
+WORKDIR /src/searchservice
+
+ENV PTCFRONTEND /frontend
+ENV GOPATH=/
+RUN go get github.com/olivere/elastic
+RUN go get github.com/gorilla/context
+RUN go get github.com/julienschmidt/httprouter
+RUN go get github.com/justinas/alice
+RUN go build -o main .
+
+
+EXPOSE 8080
+CMD ["./main"]

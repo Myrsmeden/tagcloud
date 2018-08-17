@@ -2,6 +2,7 @@ package storage
 
 import (
 	"log"
+	"time"
 
 	"github.com/olivere/elastic"
 )
@@ -16,13 +17,19 @@ type Elastic struct {
 // Create the elastic client and return a Elastic struct containing the client
 func Connect() error {
 	// Create the Elasticsearch client
-	client, err := elastic.NewSimpleClient()
-	if err != nil {
-		// Handle error
-		log.Println("Could not create Elasticsearch client")
-		log.Println(err)
-		return err
+	var err error
+	var client *elastic.Client
+	for {
+		client, err = elastic.NewClient(
+			elastic.SetURL("http://elasticsearch:9200"),
+			elastic.SetSniff(false),
+		)
+		if err != nil {
+			log.Println(err)
+			time.Sleep(2 * time.Second)
+		} else {
+			ElasticSearch = Elastic{client}
+			return nil
+		}
 	}
-	ElasticSearch = Elastic{client}
-	return nil
 }

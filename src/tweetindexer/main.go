@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/olivere/elastic"
 	"github.com/streadway/amqp"
@@ -71,14 +72,23 @@ func main() {
 	// Obtain a client and connect to the default Elasticsearch installation
 	// on 127.0.0.1:9200. Of course you can configure your client to connect
 	// to other hosts and configure it in various other ways.
-	client, err := elastic.NewSimpleClient(elastic.SetURL("http://localhost:9200"))
-	if err != nil {
-		// Handle error
-		panic(err)
+	var err error
+	var client *elastic.Client
+	for {
+		client, err = elastic.NewClient(
+			elastic.SetURL("http://elasticsearch:9200"),
+			elastic.SetSniff(false),
+		)
+		if err != nil {
+			log.Println(err)
+			time.Sleep(2 * time.Second)
+		} else {
+			break
+		}
 	}
 
 	// Ping the Elasticsearch server to get e.g. the version number
-	info, code, err := client.Ping("http://localhost:9200").Do(ctx)
+	info, code, err := client.Ping("http://elasticsearch:9200").Do(ctx)
 	if err != nil {
 		// Handle error
 		panic(err)
@@ -86,7 +96,7 @@ func main() {
 	fmt.Printf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
 
 	// Getting the ES version number is quite common, so there's a shortcut
-	esversion, err := client.ElasticsearchVersion("http://localhost:9200")
+	esversion, err := client.ElasticsearchVersion("http://elasticsearch:9200")
 	if err != nil {
 		// Handle error
 		panic(err)
@@ -114,7 +124,7 @@ func main() {
 		}
 	}
 
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
@@ -149,12 +159,12 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
+			//log.Printf("Received a message: %s", d.Body)
 			err := json.Unmarshal(d.Body, &tweet)
 			if err != nil {
 				panic(err)
 			}
-			put, err := client.Index().
+			_, err = client.Index().
 				Index("tweets").
 				Type("tweet").
 				BodyJson(tweet).
@@ -163,7 +173,7 @@ func main() {
 				// Handle error
 				panic(err)
 			}
-			fmt.Printf("Indexed tweet %s to index %s, type %s\n", put.Id, put.Index, put.Type)
+			//fmt.Printf("Indexed tweet %s to index %s, type %s\n", put.Id, put.Index, put.Type)
 		}
 	}()
 

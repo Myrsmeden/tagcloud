@@ -1,9 +1,10 @@
-FROM golang:1.6.1-alpine
+FROM golang:1.8
 
-ADD . /app
-WORKDIR /app
+COPY . /app
+WORKDIR /app/src/tweetindexer
 
-RUN go get github.com/go-martini/martini && \
-    go get github.com/martini-contrib/render && \
-    go get gopkg.in/mgo.v2 && \
-    go get github.com/martini-contrib/binding
+RUN go get github.com/olivere/elastic
+RUN go get github.com/streadway/amqp
+RUN go build -o main .
+
+CMD ["./main"]
