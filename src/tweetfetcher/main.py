@@ -60,7 +60,7 @@ def main():
     # Set up connection to RabbitMQ
     while True:
         try:
-            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+            connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
             print("Connected to RabbitMQ")
             break
         except pika.exceptions.ConnectionClosed:

@@ -1,7 +1,7 @@
 FROM python:3.7.0-slim
 
-WORKDIR /src
-ADD . /src
+COPY . /app
+WORKDIR /app
 
 RUN pip3 install -r requirements.txt
-CMD ["python3", "/src/tweetfetcher/main.py"]
+CMD ["python3", "./src/tweetfetcher/main.py"]
