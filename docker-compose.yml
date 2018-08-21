@@ -11,8 +11,6 @@ services:
     image: sebp/elk
     ports:
       - 9200:9200
-    environment:
-      - "ES_JAVA_OPTS=-Xms700m -Xmx700m"
 
   tweetfetcher:
     environment:
