@@ -155,6 +155,8 @@ config/
 #tmp is ignored
 tmp/
 
+pkg/
+
 
 
 PTC-index-service.iml
