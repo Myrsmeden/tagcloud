@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 var ElasticSearch Elastic
@@ -21,12 +21,12 @@ func Connect() error {
 	var client *elastic.Client
 	for {
 		client, err = elastic.NewClient(
-			elastic.SetURL("http://elasticsearch:9200"),
+			elastic.SetURL("http://localhost:9200"),
 			elastic.SetSniff(false),
 		)
 		if err != nil {
 			log.Println(err)
-			time.Sleep(2 * time.Second)
+			time.Sleep(5 * time.Second)
 		} else {
 			ElasticSearch = Elastic{client}
 			return nil

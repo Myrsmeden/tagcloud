@@ -7,8 +7,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/olivere/elastic"
 	"github.com/streadway/amqp"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 func failOnError(err error, msg string) {
@@ -81,7 +81,7 @@ func main() {
 		)
 		if err != nil {
 			log.Println(err)
-			time.Sleep(2 * time.Second)
+			time.Sleep(5 * time.Second)
 		} else {
 			break
 		}

@@ -1,11 +1,11 @@
-FROM golang:1.8
+FROM golang:1.10.3
 
 COPY . /
 WORKDIR /src/searchservice
 
-ENV PTCFRONTEND /react-frontend/build
+ENV PTCFRONTEND /frontend
 ENV GOPATH=/
-RUN go get github.com/olivere/elastic
+RUN go get gopkg.in/olivere/elastic.v5
 RUN go get github.com/gorilla/context
 RUN go get github.com/julienschmidt/httprouter
 RUN go get github.com/justinas/alice
