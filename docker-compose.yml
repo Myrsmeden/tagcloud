@@ -20,13 +20,6 @@ services:
       dockerfile: Dockerfile-Tweetfetcher
     depends_on:
       - rabbitmq
-  tweetindexer:
-    build:
-      context: .
-      dockerfile: Dockerfile-Tweetindexer
-    depends_on:
-      - rabbitmq
-      - elasticsearch
   searchservice:
     build:
       context: .
@@ -34,4 +27,11 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      - elasticsearch
+  tweetindexer:
+    build:
+      context: .
+      dockerfile: Dockerfile-Tweetindexer
+    depends_on:
+      - rabbitmq
       - elasticsearch
