@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 	"github.com/streadway/amqp"
 )
 

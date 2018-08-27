@@ -3,7 +3,7 @@ package storage
 import (
 	"context"
 
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 //GetHashtags queries elastic for the top 'limit' hashtags based from the

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 //Tweet a model struct that represents a typical

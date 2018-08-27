@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 var ElasticSearch Elastic
