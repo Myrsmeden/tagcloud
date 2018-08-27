@@ -3,7 +3,7 @@ FROM golang:1.8
 COPY . /
 WORKDIR /src/searchservice
 
-ENV PTCFRONTEND /react-frontend
+ENV PTCFRONTEND /react-frontend/build
 ENV GOPATH=/
 RUN go get gopkg.in/olivere/elastic.v5
 RUN go get github.com/gorilla/context

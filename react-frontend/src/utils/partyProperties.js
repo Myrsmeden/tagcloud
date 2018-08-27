@@ -1,0 +1,90 @@
+const partyProperties = [
+    {
+        name: "Vänsterpartiet",
+        hexColor: "#ed1c24",
+        RGBAColor: "rgba(237,28,36,1)",
+        colorScheme: [ "#760E11", "#8E1015", "#A51318", "#BD161C", "#D5191F", "#ED1C23", "#ED1C23" ],
+        logo: "logotypes/vansterpartiet.svg",
+        max: "",
+        min: "",
+        id: 17233550
+    },
+    {
+        name: "Socialdemokraterna",
+        hexColor: "#ee3341",
+        RGBAColor: "rgba(238,51,65,1)",
+        colorScheme: [ "#5F1419", "#771920", "#8E1E26", "#A6232C", "#BE2833", "#D62D39", "#EE3340" ],
+        logo: "logotypes/socialdemokraterna.svg",
+        max: "",
+        min: "",
+        id: 3801501,
+    },
+    {
+        name: "Miljöpartiet",
+        hexColor: "#00ae4d",
+        RGBAColor: "rgba(0,174,77,1)",
+        colorScheme: [ "#00451F", "#005727", "#00682E", "#007936", "#008B3E", "#009C46", "#00AE4E" ],
+        logo: "logotypes/miljopartiet.svg",
+        max: "",
+        min: "",
+        id: 18124359
+    },
+    {
+        name: "Sverigedemokraterna",
+        hexColor: "#fac715",
+        RGBAColor: "rgba(250,199,21,1)",
+        colorScheme: [ "#645008", "#7D640A", "#96780C", "#AF8C0E", "#C8A010", "#E1B412", "#FAC815" ],
+        logo: "logotypes/sverigedemokraterna.svg",
+        max: "",
+        min: "",
+        id: 97878686,
+    },
+    {
+        name: "Centerpartiet",
+        position: 5,
+        hexColor: "#00984f",
+        RGBAColor: "rgba(0,152,79,1)",
+        colorScheme: [ "#003C1F", "#004C27", "#005B2F", "#006A37", "#00793F", "#008847", "#00984F" ],
+        logo: "logotypes/centerpartiet.svg",
+        max: "",
+        min: "",
+        id: 3796501,
+    },
+    {
+        name: "Liberalerna",
+        position: 6,
+        hexColor: "#0097d7",
+        RGBAColor: "rgba(0,151,215,1)",
+        colorScheme: [ "#003C56", "#004B6B", "#005A81", "#006996", "#0078AC", "#0087C1", "#0097D7" ],
+        logo: "logotypes/liberalerna.svg",
+        max: "",
+        min: "",
+        id: 18687011,
+    },
+    {
+        name: "Kristdemokraterna",
+        position: 7,
+        hexColor: "#005baa",
+        RGBAColor: "rgba(0,91,170,1)",
+        colorScheme: [ "#002444", "#002D55", "#003666", "#003F77", "#004888", "#005199", "#005BAA" ],
+        logo: "logotypes/kristdemokraterna.svg",
+        max: "",
+        min: "",
+        id: 19014898,
+    },
+    {
+        name: "Moderaterna",
+        position: 8,
+        hexColor: "#63b2e7",
+        RGBAColor: "rgba(99,178,231,1)",
+        colorScheme: [ "#27475C", "#315973", "#3B6A8A", "#457CA1", "#4F8EB8", "#59A0CF", "#63B2E7" ],
+        logo: "logotypes/moderaterna.svg",
+        max: "",
+        min: "",
+        id: 19226961,
+    }
+];
+
+export const getPartyProperties = () => {
+    return partyProperties
+};
