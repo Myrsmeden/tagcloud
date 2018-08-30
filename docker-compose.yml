@@ -11,7 +11,19 @@ services:
     image: sebp/elk
     ports:
       - 9200:9200
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
 
+  followerfetcher:
+    build:
+      context: .
+      dockerfile: Dockerfile-Followerfetcher
+    depends_on:
+      - mongodb
   tweetfetcher:
     environment:
       - "PYTHONUNBUFFERED=1"
@@ -20,6 +32,7 @@ services:
       dockerfile: Dockerfile-Tweetfetcher
     depends_on:
       - rabbitmq
+      - mongodb
   searchservice:
     build:
       context: .

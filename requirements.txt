@@ -5,3 +5,4 @@ requests-oauthlib==1.0.0
 six==1.11.0
 twython==3.7.0
 urllib3==1.23
+pymongo==3.7.1

@@ -1,44 +1,41 @@
-'''
-    Skript för att hämta en eller flera användares följare. 
-    idn på konton läses från stdin och följarnas idn skrivs ut till stdout.
-'''
-
-import ConnectionList as CL
+from pymongo import MongoClient
 import json
+import ConnectionList as CL
 from twython import Twython,TwythonRateLimitError,TwythonError,TwythonAuthError
 import sys
 import datetime
 import time
 
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+client = MongoClient("mongodb", port=27017, username="mongouser", password="mongopassword")
+db=client.accounts
 
-def main():
+def add_followers(userId, followers):
+    db.accounts.update(
+        {'id': userId},
+        {'$addToSet': {'followers': followers}}
+    )
+
+
+def fetch_followers(userId):
     conn = CL.ConnectionList(filepath="../config/access.conf")
     #Läs userid från stdin
-    userId = input()
     cursor = -1
     timeout = 1
     while True:
         try:
-            #Hämta respons
+            # Fetch followers
             response = conn.connection().get_followers_ids(user_id = userId,cursor = cursor)
-            #Skriv ut info till stderr
-            print("userId="+str(userId)+", cursor="+str(cursor), file=sys.stderr)
+            
+            # Add followers to db
+            add_followers(userId, response['ids'])
 
-            #Skriv ut alla id till stdout
-            for followerId in response['ids']:
-                print(followerId)
-
-            #Ställ in cursorn
+            # Update cursor
             cursor = response['next_cursor']
 
-            #När det inte finns mer att hämta.
-            while response['next_cursor'] == 0:
-                #Läs
-                userId = input()
-                #Nollställ cursor
-                cursor = -1
-                #hämta nästa respons
-                response = conn.connection().get_followers_ids(user_id = userId,cursor = cursor)
+            # End if no more data
+            if response['next_cursor'] == 0:
+                return
 
 
         except TwythonAuthError:
@@ -68,4 +65,17 @@ def main():
             print("Error.. userId="+userid+", cursor="+cursor, file=sys.stderr)
             print(other, file=sys.stderr)
 
-main()
+if not db.accounts.find().count():
+    accounts_file = open('../config/accounts.json').read()
+    accounts = json.loads(accounts_file)
+    for party in accounts["parties"]:
+        p = {
+            'name': party['name'],
+            'id': party['users'][0],
+            'followers': []
+        }
+        result=db.accounts.insert_one(p)
+
+for party in db.accounts.find():
+    print("Fetching followers for", party['name'])
+    fetch_followers(party['id'])
